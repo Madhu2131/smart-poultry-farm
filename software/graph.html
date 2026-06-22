@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="RomeshSeenuvasan">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <title>Poultry Disease Detection - Analytics</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #2c786c;
+            --primary-dark: #004445;
+            --secondary: #f8b500;
+            --light: #faf5e4;
+            --dark: #333;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1596733430284-f7437764b1a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--light);
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 68, 69, 0.95) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar-brand {
+            color: var(--light) !important;
+            font-weight: 700;
+            font-size: 22px;
+        }
+        
+        .navbar-brand i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        .nav-link {
+            color: var(--light) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--secondary) !important;
+        }
+        
+        .page-title {
+            text-align: center;
+            color: var(--secondary);
+            margin: 30px 0;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .graph-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .graph-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .graph-title {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(248, 181, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        .graph-image {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .stats-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 10px 0;
+        }
+        
+        .stats-label {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+        
+        .info-section {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+        }
+        
+        .section-heading {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            margin-top: 50px;
+            text-align: center;
+            color: #b0b0b0;
+        }
+        
+        @media (max-width: 768px) {
+            .graph-container {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-feather-alt"></i> POULTRY DISEASE DETECTION
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="userlog.html"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="graph.html"><i class="fas fa-chart-line"></i> Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <h1 class="page-title"><i class="fas fa-chart-bar"></i> Disease Analytics Dashboard</h1>
+        
+       
+        
+        <!-- Main Count Plot -->
+        {% if img %}
+        <div class="graph-container">
+            <h3 class="graph-title"><i class="fas fa-chart-pie"></i> COUNT PLOT for {{col}}</h3>
+            <div class="text-center">
+                <img src="{{img}}" class="graph-image" alt="Count Plot">
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Additional Graphs in Rows -->
+        <div class="row">
+            {% for i in range(3) %}
+            <div class="col-md-6">
+                <div class="graph-container">
+                    <h3 class="graph-title"><i class="fas fa-chart-line"></i> {{content[i]}}</h3>
+                    <div class="text-center">
+                        <img src="{{images[i]}}" class="graph-image" alt="{{content[i]}}">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Additional Info Section -->
+        <!-- <div class="info-section">
+            <h3 class="section-heading"><i class="fas fa-info-circle"></i> About These Analytics</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Our poultry disease detection system uses advanced machine learning algorithms to analyze images and identify potential health issues in your flock.</p>
+                    <p>The analytics dashboard provides insights into disease patterns, helping you make informed decisions about flock management and preventive measures.</p>
+                </div>
+                <div class="col-md-6">
+                    <p>Regular monitoring of these metrics can help:</p>
+                    <ul>
+                        <li>Identify disease outbreaks early</li>
+                        <li>Track effectiveness of treatments</li>
+                        <li>Optimize flock management practices</li>
+                        <li>Reduce economic losses from disease</li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    
+   
+
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script>
+        // Simple animation for stats cards
+        $(document).ready(function() {
+            $('.stats-card').each(function(i) {
+                $(this).delay(i * 200).animate({
+                    opacity: 1,
+                    top: 0
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

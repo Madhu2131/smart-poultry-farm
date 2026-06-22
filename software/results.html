@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Poultry Disease Detection | Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c786c;
+            --primary-dark: #004445;
+            --secondary: #f8b500;
+            --light: #faf5e4;
+            --dark: #333;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1596733430284-f7437764b1a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 68, 69, 0.95) !important;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar-brand {
+            color: var(--light) !important;
+            font-weight: 700;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .navbar-nav li a {
+            color: var(--light) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 15px 20px !important;
+        }
+        
+        .navbar-nav li a:hover {
+            color: var(--secondary) !important;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .navbar-nav .active a {
+            background-color: rgba(248, 181, 0, 0.2);
+            color: var(--secondary) !important;
+        }
+        
+        .container {
+            padding-top: 30px;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+            margin-top: 20px;
+        }
+        
+        .alert-warning {
+            background-color: rgba(248, 181, 0, 0.2);
+            color: var(--light);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .results-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .section-title {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(248, 181, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        .image-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .accuracy-meter {
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin: 10px 0 20px;
+            overflow: hidden;
+        }
+        
+        .accuracy-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--success), var(--secondary));
+            border-radius: 5px;
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        .info-section ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        
+        .info-section li {
+            margin-bottom: 8px;
+            color: #e0e0e0;
+        }
+        
+        .btn-download {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .btn-download:hover {
+            background-color: #e6a500;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-download i {
+            margin-right: 8px;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            margin-top: 50px;
+            text-align: center;
+            color: #b0b0b0;
+        }
+        
+        @media (max-width: 768px) {
+            .results-container {
+                padding: 20px 15px;
+            }
+            
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-feather-alt"></i> POULTRY DISEASE DETECTION
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="userlog.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="active"><a href="graph.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if msg %}
+        <div class="alert alert-warning alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong><i class="fas fa-exclamation-triangle"></i> Warning!</strong> {{msg}}
+        </div>
+        {% endif %}
+
+        <div class="results-container">
+            <h1 class="page-title"><i class="fas fa-search"></i> POULTRY DISEASE DETECTION RESULTS</h1>
+            {% if ImageDisplay %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="image-container">
+                        <h3 class="section-title"><i class="fas fa-image"></i> Selected Image</h3>
+                        {% if (ImageDisplay) %}
+                        <img src="{{ImageDisplay}}" alt="Poultry Image">
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="result-card">
+                        <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Analysis Result</h3>
+                        
+                        {% if (status) %}
+                        <div class="status-badge">
+                            <i class="fas fa-diagnoses"></i> {{status}}
+                        </div>
+                        
+                        <div class="accuracy-info">
+                            <p><strong>Confidence Level:</strong> {{accuracy}}</p>
+                            <div class="accuracy-meter">
+                                <div class="accuracy-fill" style="width: {{accuracy}};"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-biohazard"></i> Causes:</h4>
+                            <ul>
+                                {% for causes in causes1 %}
+                                <li>{{causes}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-stethoscope"></i> Symptoms:</h4>
+                            <ul>
+                                {% for symptoms in symptoms1 %}
+                                <li>{{symptoms}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-shield-alt"></i> Precautions:</h4>
+                            <ul>
+                                {% for precautions in precautions1 %}
+                                <li>{{precautions}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-clinic-medical"></i> Remedies:</h4>
+                            <ul>
+                                {% for Remedies in Remedies1 %}
+                                <li>{{Remedies}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <!-- <button id="download-pdf" class="btn-download">
+                            <i class="fas fa-file-pdf"></i> Download Report as PDF
+                        </button> -->
+                        {% endif %}
+
+</div>
+</div>
+</div>
+{% endif %}
+
+                         {% if (ImageDisplay1) %}
+                         <div class="row">
+                        <div class="col-md-6">
+                         <div class="image-container">
+                        <h3 class="section-title"><i class="fas fa-image"></i> Selected Image</h3>
+                           {% if (ImageDisplay1) %}
+                        <img src="{{ImageDisplay1}}" alt="Poultry Image">
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="result-card">
+                        <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Analysis Result</h3>
+                        
+                        {% if (status1) %}
+                        <div class="status-badge">
+                            <i class="fas fa-diagnoses"></i> {{status1}}
+                        </div>
+                        
+                        <div class="accuracy-info">
+                            <p><strong>Confidence Level:</strong> {{accuracy1}}</p>
+                            <div class="accuracy-meter">
+                                <div class="accuracy-fill" style="width: {{accuracy}};"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-biohazard"></i> Causes:</h4>
+                            <ul>
+                                {% for causes in causes11 %}
+                                <li>{{causes}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-stethoscope"></i> Symptoms:</h4>
+                            <ul>
+                                {% for symptoms in symptoms11 %}
+                                <li>{{symptoms}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-shield-alt"></i> Precautions:</h4>
+                            <ul>
+                                {% for precautions in precautions11 %}
+                                <li>{{precautions}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-clinic-medical"></i> Remedies:</h4>
+                            <ul>
+                                {% for Remedies in Remedies11 %}
+                                <li>{{Remedies}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <!-- <button id="download-pdf" class="btn-download">
+                            <i class="fas fa-file-pdf"></i> Download Report as PDF
+                        </button> -->
+                        {% endif %}
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   {% endif %}
+
+    <script>
+        // PDF download functionality
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            const element = document.querySelector('.results-container');
+            
+            html2pdf()
+                .from(element)
+                .set({
+                    filename: 'poultry_disease_report.pdf',
+                    pagebreak: { mode: 'avoid-all' },
+                    margin: [10, 10],
+                    html2canvas: { scale: 2 },
+                    jsPDF: { format: 'a4', orientation: 'portrait' }
+                })
+                .save();
+        });
+        
+        // Set accuracy meter width based on accuracy value
+        document.addEventListener('DOMContentLoaded', function() {
+            const accuracyElement = document.querySelector('.accuracy-info p strong');
+            if (accuracyElement) {
+                const accuracyText = accuracyElement.nextSibling.textContent.trim();
+                const accuracyValue = accuracyText.replace('%', '');
+                document.querySelector('.accuracy-fill').style.width = accuracyValue + '%';
+            }
+        });
+    </script>
+</body>
+</html>
